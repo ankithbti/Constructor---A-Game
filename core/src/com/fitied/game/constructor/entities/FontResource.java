@@ -12,19 +12,26 @@ public class FontResource {
 	FreeTypeFontGenerator.FreeTypeFontParameter _params;
 	FreeTypeFontGenerator _fontGenerator;
 
-	private FontResource(String fontFile) {
+	private FontResource() {
+		
+	}
+	
+	public void setFont(String fontFile){
 		_fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(fontFile));
 		_params = new FreeTypeFontGenerator.FreeTypeFontParameter();
 	}
 
-	public static FontResource getInstance(String fontFile) {
+	public static FontResource getInstance() {
 		if (_instance == null) {
-			_instance = new FontResource(fontFile);
+			_instance = new FontResource();
 		}
 		return _instance;
 	}
 
 	public BitmapFont getFont(int size, Color color) {
+		if(_fontGenerator == null || _params == null){
+			return null;
+		}
 		_params.size = size;
 		_params.color = color;
 		_font = _fontGenerator.generateFont(_params);
